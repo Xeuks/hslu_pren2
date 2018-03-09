@@ -2,26 +2,34 @@ import numpy as np
 import cv2
 import math
 
+# Get webcam stream
 cap = cv2.VideoCapture(0)
 
 while(True):
+
+    # Read image stream, returns multiple values
+    # _, = discard first return value (not used)
     _, img = cap.read()
 
+    # Convert image into black and white
     #img = cv2.imread("zielfeld_mit_Zeugs_2.jpg")
-    gray= cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
     
     # Initiate FAST object with default values
     fast = cv2.FastFeatureDetector_create()
 
-    # Disable nonmaxSuppression
+    # Disable nonmaxSuppression, set threshhold for corner detection
     fast.setNonmaxSuppression(1)
     fast.setThreshold(100)
 
+    # Execute the FAST algorithm
     kp = fast.detect(img,None)
-    
+
+    # Create a new image with added keypoints and show it
     img2 = cv2.drawKeypoints(img, kp, None, color=(255,0,0))
     cv2.imshow('video1',img2)
      
+    # Variables needed for the following calculations
     prev_d_len = 0
     prve_x_len = 0
     prve_y_len = 0
