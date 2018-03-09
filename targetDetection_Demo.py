@@ -48,7 +48,7 @@ while(True):
             cont_check = (prev_d_len+threshold > d_len) and (prev_d_len-threshold < d_len)
             should_x_len = x_len + 2 * math.fabs(kp[i].pt[0]-kp[i-2].pt[0])
             cont_check = cont_check and (prve_x_len+threshold > should_x_len) and (prve_x_len-threshold < should_x_len)
-           # should_y_len = y_len + 2 * math.fabs(kp[i].pt[1]-kp[i-2].pt[1])
+            #should_y_len = y_len + 2 * math.fabs(kp[i].pt[1]-kp[i-2].pt[1])
             #cont_check = cont_check and (prve_y_len+threshold > should_y_len) and (prve_y_len-threshold < should_y_len)
              
         if cont_check == True:
@@ -71,7 +71,7 @@ while(True):
                 mid_x = int(width /2)
 
                 act_len = (math.fabs(mid_x-h_x) / ref_len_p)*ref_len_cm
-               # width_len = width/ref_len_p*ref_len_cm
+                #width_len = width/ref_len_p*ref_len_cm
 
                 t_len = math.fabs(kp[i-2].pt[0]-kp[i-2+1].pt[0])
                 length = t_len/ref_len_p*ref_len_cm
