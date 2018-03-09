@@ -31,38 +31,54 @@ while(True):
      
     # Variables needed for the following calculations
     prev_d_len = 0
-    prve_x_len = 0
-    prve_y_len = 0
+    prev_x_len = 0
+    prev_y_len = 0
     threshold = 10
     required_matches = 4
     matched = 0
     i = 0
     is_first = True
 
+    # Calculating distances (keypoints are sorted by y-values)
+    # Variable y is not being used
     while i < len(kp)-2:
+
+        # Current keypoint
         cur = kp[i].pt
+        # Diagonally nearest keypoint
         near_d = kp[i+2].pt
+        # Nearest keypoint on x axis
         near_x = kp[i+1].pt
+        # Nearest keypoint on y axis
         near_y = kp[len(kp)-i-1].pt
 
+        # Calculate diagonal distance
         d_len = math.fabs(cur[0]-near_d[0])+math.fabs(cur[1]-near_d[1])
+        # Calculate distance on x axis
         x_len = math.fabs(cur[0]-near_x[0])+math.fabs(cur[1]-near_x[1])
-        y_len = math.fabs(cur[0]-near_y[0])+math.fabs(cur[1]-near_y[1])
+        # Calculate distance on y axis
+        #y_len = math.fabs(cur[0]-near_y[0])+math.fabs(cur[1]-near_y[1])
 
+        # Check if the current keypoint is the first one
         if is_first:
             cont_check = True
             is_first = False
+        # Otherwise, check for continuity by comparing calculated values
         else:
+            # True if previous length + threshhold is greater than current distance
+            # and if previous length - threshhold is less than current distance (getting smaller)
             cont_check = (prev_d_len+threshold > d_len) and (prev_d_len-threshold < d_len)
+            # Check if all x added up gives the total length on the x axis
             should_x_len = x_len + 2 * math.fabs(kp[i].pt[0]-kp[i-2].pt[0])
-            cont_check = cont_check and (prve_x_len+threshold > should_x_len) and (prve_x_len-threshold < should_x_len)
+            # True if all conditions are met
+            cont_check = cont_check and (prev_x_len+threshold > should_x_len) and (prev_x_len-threshold < should_x_len)
             #should_y_len = y_len + 2 * math.fabs(kp[i].pt[1]-kp[i-2].pt[1])
-            #cont_check = cont_check and (prve_y_len+threshold > should_y_len) and (prve_y_len-threshold < should_y_len)
+            #cont_check = cont_check and (prev_y_len+threshold > should_y_len) and (prev_y_len-threshold < should_y_len)
              
         if cont_check == True:
             prev_d_len = d_len
-            prve_x_len = x_len
-            prve_y_len = y_len
+            prev_x_len = x_len
+            prev_y_len = y_len
             matched += 1
             i = i+2
            
@@ -104,8 +120,8 @@ while(True):
             is_first = True
             matched = 0
             prev_d_len = 0
-            prve_x_len = 0
-            prve_y_len = 0
+            prev_x_len = 0
+            prev_y_len = 0
             i+=1
     
     if cv2.waitKey(1)==27:# esc Key
